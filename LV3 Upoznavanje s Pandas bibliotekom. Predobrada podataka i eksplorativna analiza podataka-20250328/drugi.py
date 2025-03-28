@@ -1,0 +1,52 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv('data_C02_emission.csv')
+#a)
+plt.figure(figsize=(10,6))
+plt.hist(df['CO2 Emissions (g/km)'], bins=20, color='skyblue', edgecolor='black')
+plt.title('Distribucija emisije CO2 plinova')
+plt.xlabel('Emisija CO2 (g/km)')
+plt.ylabel('Broj vozila')
+plt.grid(True)
+plt.show()
+
+#b)
+plt.figure(figsize=(10,6))
+plt.scatter(df['Fuel Consumption City (L/100km)'], df['CO2 Emissions (g/km)'], c=df['Fuel Type'].astype('category').cat.codes, cmap='viridis')
+plt.title('Odnos gradske potrošnje goriva i emisije CO2')
+plt.xlabel('Gradska potrošnja goriva (L/100km)')
+plt.ylabel('Emisija CO2 (g/km)')
+plt.colorbar(label='Tip goriva')
+plt.grid(True)
+plt.show()
+
+#c)
+plt.figure(figsize=(10,6))
+df.boxplot(column='Fuel Consumption Hwy (L/100km)', by='Fuel Type', grid=True)
+plt.title('Razdioba izvangradske potrošnje goriva prema tipu goriva')
+plt.suptitle('')  # Uklanja dodatni naslov koji automatski stavlja pandas
+plt.xlabel('Tip goriva')
+plt.ylabel('Izvangradska potrošnja goriva (L/100km)')
+plt.show()
+
+#d)
+fuel_counts = df.groupby('Fuel Type').size()
+
+plt.figure(figsize=(10,6))
+fuel_counts.plot(kind='bar', color='lightcoral', edgecolor='black')
+plt.title('Broj vozila po tipu goriva')
+plt.xlabel('Tip goriva')
+plt.ylabel('Broj vozila')
+plt.xticks(rotation=0)
+plt.show()
+
+#e)
+avg_co2_by_cylinders = df.groupby('Cylinders')['CO2 Emissions (g/km)'].mean()
+
+plt.figure(figsize=(10,6))
+avg_co2_by_cylinders.plot(kind='bar', color='lightgreen', edgecolor='black')
+plt.title('Prosječna emisija CO2 po broju cilindara')
+plt.xlabel('Broj cilindara')
+plt.ylabel('Prosječna emisija CO2 (g/km)')
+plt.xticks(rotation=0)
+plt.show()
